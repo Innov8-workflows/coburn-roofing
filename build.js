@@ -130,8 +130,12 @@ const SERVICES = [
    Add more: drop an .mp4 in /media and add an entry here.
 --------------------------------------------------------------------------- */
 const TRANSFORMATIONS = [
-  { title: "Full Re-Roof, Nottingham", video: "ba-1.mp4",
+  { title: "Full Re-Roof, Nottingham", video: "ba-1.mp4", poster: "transformation-poster.jpg", orient: "portrait",
     desc: "A tired, failing roof stripped right back and rebuilt from the battens up &mdash; new breathable membrane, treated battens, fresh tiles, ridge and lead flashings. The result: a clean, completely watertight roof built to last for decades." },
+  { title: "Aerial View: Full Re-Roof", video: "ba-2.mp4", poster: "ba-2-poster.jpg", orient: "landscape",
+    desc: "Drone footage of a complete re-roof on a period property &mdash; the old, moss-covered tiles stripped away and replaced with crisp new interlocking tiles, fresh ridges and valleys. A proper transformation, seen from above." },
+  { title: "Stripped Back &amp; Re-Tiled", video: "ba-3.mp4", poster: "ba-3-poster.jpg", orient: "portrait",
+    desc: "This roof was taken right back to the rafters &mdash; old felt and rotten battens removed &mdash; then rebuilt with fresh membrane, battens and modern grey tiles around the chimney for a smart, fully watertight finish." },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -336,9 +340,9 @@ function baSection() {
       <div class="ba-item">
         <header class="ba-head"><span class="ba-num">Project ${String(i + 1).padStart(2, "0")}</span><h3>${t.title}</h3></header>
         <div class="ba-media">
-          <div class="ba-video">
+          <div class="ba-video ${t.orient}">
             <div class="ba-badge"><span>Before</span><span class="after">After</span></div>
-            <video data-lazy muted loop playsinline preload="none" poster="${A}/transformation-poster.jpg"><source src="${embedVideo(t.video)}" type="video/mp4"></video>
+            <video data-lazy muted loop playsinline preload="none" poster="${A}/${t.poster}"><source src="${embedVideo(t.video)}" type="video/mp4"></video>
           </div>
         </div>
         <div class="ba-text"><p>${t.desc}</p></div>
