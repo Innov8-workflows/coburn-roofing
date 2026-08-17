@@ -304,6 +304,7 @@ function footer() {
 </footer>
 ${floatCta()}
 <script src="${A}/site.js" defer></script>
+<script defer src="https://crm.innov8workflows.co.uk/track.js" data-id="proj_97b1b823fd43"></script>
 </body>
 </html>`;
 }
