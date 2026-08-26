@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://innov8-workflows.github.io/coburn-roofing/sitemap.xml

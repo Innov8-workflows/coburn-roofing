@@ -1,0 +1,46 @@
+{
+  // Assets-only Worker: there is deliberately no "main".
+  //
+  // Adding a `main` later would stop _headers applying to any Worker-generated
+  // response, silently dropping the security headers on those paths.
+  // See https://developers.cloudflare.com/workers/static-assets/headers/
+  "name": "coburn-roofing",
+  "compatibility_date": "2026-08-26",
+
+  "assets": {
+    // Build output only. Populated by `node sync.js`, which copies the built
+    // pages out of the generator folder on K:. Nothing may be hand-placed here.
+    "directory": "./_site",
+
+    // The pages are FLAT files - services.html, not services/index.html - so
+    // Workers serves them extensionless at /services and 307s /services.html
+    // and /services/ to that. The generator emits matching extensionless
+    // canonicals, og:urls, breadcrumbs, sitemap entries and internal links, so
+    // no indexable URL redirects away from its own canonical, and the old
+    // GitHub Pages .html links redirect inward rather than breaking.
+    //
+    // "none" was measured and rejected: it 404s the bare "/" - it will not map
+    // the root to index.html. On this flat layout drop-trailing-slash and the
+    // default auto-trailing-slash behave identically; this one is explicit
+    // about there never being a trailing slash.
+    "html_handling": "drop-trailing-slash",
+
+    // Serves _site/404.html with a real 404 status for any miss.
+    "not_found_handling": "404-page"
+  },
+
+  // Custom domains. Cloudflare creates and manages the DNS records for these,
+  // which is why none are added by hand. www is attached so that it resolves at
+  // all, and a Redirect Rule 301s it to the apex so there is one canonical host.
+  "routes": [
+    { "pattern": "coburnroofing.co.uk", "custom_domain": true },
+    { "pattern": "www.coburnroofing.co.uk", "custom_domain": true }
+  ],
+
+  // Off, so there is no second complete copy of the site on a workers.dev
+  // hostname competing with the real domain in search.
+  "workers_dev": false,
+
+  // Preview URLs would republish the site on yet another hostname per version.
+  "preview_urls": false
+}

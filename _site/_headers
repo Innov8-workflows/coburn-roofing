@@ -1,0 +1,18 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: accelerometer=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; script-src 'self' https://crm.innov8workflows.co.uk; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; media-src 'self'; connect-src 'self' https://crm.innov8workflows.co.uk https://script.google.com https://script.googleusercontent.com; form-action 'self'; manifest-src 'none'; worker-src 'none'; upgrade-insecure-requests
+
+# site.css and site.js are NOT content-hashed, so they must never get a long
+# TTL - a rebuilt file would be stuck in caches with no way to bust it. The
+# same goes for the photos and clips. Cloudflare's default (max-age=0,
+# must-revalidate + ETag) still gives repeat visitors a cheap 304.
+
+# Belt and braces: keeps a preview copy out of the index if workers_dev is ever
+# switched back on. With workers_dev=false this rule simply never matches.
+https://:worker.:account.workers.dev/*
+  X-Robots-Tag: noindex, nofollow
