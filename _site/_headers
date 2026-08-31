@@ -5,7 +5,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: accelerometer=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()
-  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; script-src 'self' https://crm.innov8workflows.co.uk; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; media-src 'self'; connect-src 'self' https://crm.innov8workflows.co.uk https://script.google.com https://script.googleusercontent.com; form-action 'self'; manifest-src 'none'; worker-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; script-src 'self' https://crm.innov8workflows.co.uk https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://crm.innov8workflows.co.uk https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.googletagmanager.com; form-action 'self'; manifest-src 'none'; worker-src 'none'; upgrade-insecure-requests
 
 # site.css and site.js are NOT content-hashed, so they must never get a long
 # TTL - a rebuilt file would be stuck in caches with no way to bust it. The

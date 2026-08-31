@@ -106,4 +106,192 @@
   /* ---- Footer year ---- */
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
+
+  /* ============================================================
+     COOKIE CONSENT AND GOOGLE ANALYTICS 4
+     ============================================================
+     The measurement ID arrives on <body data-ga4>, from BIZ.GA4_ID in
+     build.js. No ID, no banner, no gtag, no cookies - the whole block is
+     inert, which is how it stays testable and how it switches off.
+
+     WHY THIS IS NOT THE SNIPPET GOOGLE GIVES YOU. Google's snippet is two
+     <script> tags, the second inline. This site's CSP is script-src 'self'
+     plus the CRM host, with NO 'unsafe-inline', so that inline block would be
+     refused and analytics would silently never start - green in the editor,
+     dead in production. Everything below runs from site.js, which is
+     same-origin and allowed, and it appends the gtag loader itself.
+
+     CONSENT MODE V2, DENIED BY DEFAULT. gtag.js loads on every page but is
+     told up front that analytics_storage is denied, so NO COOKIE IS WRITTEN
+     until somebody presses Accept. A rejected visit still sends a cookieless
+     ping, which keeps headline visitor counts honest; the privacy policy says
+     so plainly rather than pretending rejection means nothing leaves the page.
+
+     wait_for_update gives the stored choice time to be read and applied before
+     the first hit goes out, so an accepting returning visitor is not counted
+     as a denied one on their first page.
+
+     The choice lives in localStorage, not a cookie. Storing a cookie to record
+     that you may not set cookies is the joke that writes itself, and
+     localStorage is exempt on the same "strictly necessary" grounds. */
+  var GA_KEY = "coburn_consent", GA_VER = "v1";
+  var ga4 = document.body.getAttribute("data-ga4");
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+
+  if (ga4) {
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      wait_for_update: 500
+    });
+
+    var readChoice = function () {
+      try {
+        var v = localStorage.getItem(GA_KEY);
+        if (!v) return null;
+        var parts = v.split(":");
+        return parts[0] === GA_VER ? parts[1] : null;
+      } catch (e) { return null; }
+    };
+    var writeChoice = function (v) {
+      try { localStorage.setItem(GA_KEY, GA_VER + ":" + v); } catch (e) {}
+    };
+    var applyChoice = function (v) {
+      gtag("consent", "update", { analytics_storage: v === "accepted" ? "granted" : "denied" });
+    };
+
+    var stored = readChoice();
+    if (stored) applyChoice(stored);
+
+    var gs = document.createElement("script");
+    gs.async = true;
+    gs.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(ga4);
+    document.head.appendChild(gs);
+    gtag("js", new Date());
+    gtag("config", ga4, { anonymize_ip: true });
+
+    /* ---- the banner ----
+       Built in JS rather than shipped in every page's HTML, so a visitor who
+       has already answered never receives the markup at all. Styles live in
+       site.css. */
+    var showBanner = function () {
+      var b = document.createElement("div");
+      b.className = "cc";
+      b.setAttribute("role", "dialog");
+      b.setAttribute("aria-label", "Cookies");
+      b.innerHTML =
+        '<div class="cc__in">' +
+          '<p class="cc__t"><b>Cookies</b> We would like to count visits with Google Analytics, which sets a cookie. ' +
+          'It is not used for advertising and you are not tracked across other websites. ' +
+          'The site works exactly the same either way. <a href="' +
+          (document.body.getAttribute("data-privacy") || "/privacy-policy") + '">Privacy policy</a></p>' +
+          '<div class="cc__b">' +
+            '<button type="button" class="cc__no">Reject</button>' +
+            '<button type="button" class="cc__yes">Accept</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(b);
+      document.body.classList.add("has-cc");
+
+      /* Push the call/WhatsApp float above the banner by the banner's REAL
+         height. A fixed offset is not enough: the text wraps to four lines on
+         a narrow phone and one on a wide screen, so the float ends up buried.
+         ResizeObserver rather than one measurement, because measuring on
+         append reads the height BEFORE the webfont swaps in, and rotating a
+         phone rewraps it again. */
+      var lift = function () { document.body.style.setProperty("--cc-h", b.offsetHeight + "px"); };
+      lift();
+      var ro = null;
+      if (window.ResizeObserver) { ro = new ResizeObserver(lift); ro.observe(b); }
+      else { window.addEventListener("resize", lift); }
+
+      /* two frames: one to get it into the layout, one so the transition has a
+         start value to animate from rather than snapping */
+      requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add("cc--in"); }); });
+
+      var close = function (choice) {
+        writeChoice(choice);
+        applyChoice(choice);
+        b.classList.remove("cc--in");
+        document.body.classList.remove("has-cc");
+        /* let the observer go with the banner, or it keeps a detached node
+           alive and keeps writing --cc-h for something that no longer exists */
+        if (ro) ro.disconnect(); else window.removeEventListener("resize", lift);
+        document.body.style.removeProperty("--cc-h");
+        setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 350);
+      };
+      b.querySelector(".cc__yes").addEventListener("click", function () { close("accepted"); });
+      b.querySelector(".cc__no").addEventListener("click", function () { close("rejected"); });
+    };
+    if (!stored) showBanner();
+
+    /* Lets somebody change their mind: any element with data-cc-reset wipes
+       the stored choice and reloads, bringing the banner back. It sits in the
+       privacy policy, because burying it would defeat the point. */
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      while (t && t !== document.body) {
+        if (t.hasAttribute && t.hasAttribute("data-cc-reset")) {
+          e.preventDefault();
+          try { localStorage.removeItem(GA_KEY); } catch (err) {}
+          location.reload();
+          return;
+        }
+        t = t.parentNode;
+      }
+    });
+
+    /* ---- events ----
+       Three, matching the names used across the other client sites and the
+       Apps Script lead types: click_to_call, click_whatsapp, generate_lead.
+       generate_lead is one of GA4's own recommended event names, so it can be
+       marked as a key event in the property with no extra setup.
+
+       Delegated from document in the CAPTURE phase: a tel: or wa.me tap starts
+       a navigation that can tear this document down, and a listener bound to
+       the link itself in the bubble phase can lose that race. Delegation also
+       covers links added to any page later without touching this file. */
+    var where = function (el) {
+      if (!el || !el.closest) return "page";
+      if (el.closest(".float-cta")) return "floating button";
+      if (el.closest(".nav")) return "nav";
+      if (el.closest(".hero-home") || el.closest(".hero")) return "hero";
+      if (el.closest("form")) return "contact form";
+      if (el.closest(".cta-hero")) return "bottom CTA";
+      if (el.closest(".contact-grid")) return "contact details";
+      if (el.closest(".site-footer")) return "footer";
+      return "page";
+    };
+
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("a") : null;
+      if (!a) return;
+      var h = a.getAttribute("href") || "";
+      if (h.indexOf("tel:") === 0) {
+        gtag("event", "click_to_call", { link_source: where(a), page_path: location.pathname });
+      } else if (h.indexOf("wa.me") > -1) {
+        gtag("event", "click_whatsapp", { link_source: where(a), page_path: location.pathname });
+      }
+    }, true);
+
+    /* The quote form does not POST anywhere - it hands off to WhatsApp - so
+       there is no thank-you page to count. The submit itself is the lead, and
+       it counts whether or not they go on to press send in WhatsApp. */
+    document.addEventListener("submit", function (e) {
+      var f = e.target;
+      if (!f || !f.classList || !f.classList.contains("wa-form")) return;
+      var svc = f.querySelector('[name="service"]');
+      gtag("event", "generate_lead", {
+        form_id: "quote_form",
+        service: svc ? svc.value : "",
+        page_path: location.pathname
+      });
+    }, true);
+  }
+
 })();
