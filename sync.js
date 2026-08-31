@@ -31,9 +31,12 @@ if (!fs.existsSync(SRC)) {
   process.exit(1);
 }
 
+/* Editor and tool leftovers must never reach a published asset directory.
+   site.css.bak and site.js.bak were deployed once before this filter existed. */
+const JUNK = /\.(bak|orig|rej|swp|tmp)$|~$|^\.DS_Store$|^Thumbs\.db$/i;
 const copyDir = (from, to) => {
   fs.rmSync(to, { recursive: true, force: true });
-  fs.cpSync(from, to, { recursive: true });
+  fs.cpSync(from, to, { recursive: true, filter: src => !JUNK.test(path.basename(src)) });
 };
 
 fs.mkdirSync(DST, { recursive: true });
