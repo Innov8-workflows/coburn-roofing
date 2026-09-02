@@ -25,10 +25,19 @@
     var vio = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         var v = e.target;
-        if (e.isIntersecting) { if (v.paused) v.play().catch(function () {}); }
-        else if (!v.paused) v.pause();
+        if (e.isIntersecting) {
+          /* Attach the poster only now. A <video preload="none"> still fetches
+             its poster IMMEDIATELY - preload governs the media, not the poster -
+             so three below-fold posters were competing with the hero poster,
+             which is the page's LCP element. */
+          var dp = v.getAttribute("data-poster");
+          if (dp) { v.setAttribute("poster", dp); v.removeAttribute("data-poster"); }
+          if (v.paused) v.play().catch(function () {});
+        } else if (!v.paused) v.pause();
       });
-    }, { threshold: 0.25 });
+      /* rootMargin so the poster and clip start a little before they scroll
+         into view, rather than popping in blank. */
+    }, { threshold: 0.25, rootMargin: "200px 0px" });
     vids.forEach(function (v) { vio.observe(v); });
   }
 
