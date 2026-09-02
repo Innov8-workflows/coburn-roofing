@@ -34,8 +34,11 @@ if (!fs.existsSync(SRC)) {
 }
 
 /* Editor and tool leftovers must never reach a published asset directory.
-   site.css.bak and site.js.bak were deployed once before this filter existed. */
-const JUNK = /\.(bak|orig|rej|swp|tmp)$|~$|^\.DS_Store$|^Thumbs\.db$/i;
+   site.css.bak and site.js.bak were deployed once before this filter existed,
+   and site.css.pre-mobile slipped through the first version of it - hence the
+   \.pre- clause. Keep working copies in _backups/ beside the generator, not in
+   assets/, and this stays a backstop rather than the only line of defence. */
+const JUNK = /\.(bak|orig|rej|swp|tmp|old|copy)$|\.pre-|~$|^\.DS_Store$|^Thumbs\.db$/i;
 const copyDir = (from, to) => {
   fs.rmSync(to, { recursive: true, force: true });
   fs.cpSync(from, to, { recursive: true, filter: src => !JUNK.test(path.basename(src)) });
