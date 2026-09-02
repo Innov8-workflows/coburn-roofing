@@ -1,0 +1,6 @@
+# How to report a security problem with this website.
+# The site is static: no server-side code, no database, no login.
+Contact: mailto:jamie@innov8workflows.co.uk
+Expires: 2027-09-02T17:51:17Z
+Preferred-Languages: en
+Canonical: https://coburnroofing.co.uk/.well-known/security.txt

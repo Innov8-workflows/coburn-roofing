@@ -23,7 +23,9 @@ const DST = path.join(__dirname, '_site');
    node_modules all live beside the output and none of them belong in a
    published asset directory. */
 const FILES = ['robots.txt', 'sitemap.xml', '_headers'];
-const DIRS = ['assets', 'media'];
+/* .well-known carries security.txt. It is a DIR entry rather than a FILES one
+   because the allowlist is flat and would otherwise never reach the site. */
+const DIRS = ['assets', 'media', '.well-known'];
 
 if (!fs.existsSync(SRC)) {
   console.error('sync: generator folder not found: ' + SRC);
