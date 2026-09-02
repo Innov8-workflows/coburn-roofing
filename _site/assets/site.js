@@ -299,9 +299,15 @@
       b.setAttribute("aria-label", "Cookies");
       b.innerHTML =
         '<div class="cc__in">' +
+          /* The middle two sentences are wrapped so CSS can drop them on a phone.
+             At full length the banner was 206px tall - a third of a 390x844
+             screen - and it sat on top of the WhatsApp CTA on first load, which
+             is the one thing a first-time visitor is there to press. Desktop
+             keeps the full disclosure; mobile keeps the first sentence and the
+             policy link, which is where the detail belongs anyway. */
           '<p class="cc__t"><b>Cookies</b> We would like to count visits with Google Analytics, which sets a cookie. ' +
-          'It is not used for advertising and you are not tracked across other websites. ' +
-          'The site works exactly the same either way. <a href="' +
+          '<span class="cc__more">It is not used for advertising and you are not tracked across other websites. ' +
+          'The site works exactly the same either way. </span><a href="' +
           (document.body.getAttribute("data-privacy") || "/privacy-policy") + '">Privacy policy</a></p>' +
           '<div class="cc__b">' +
             '<button type="button" class="cc__no">Reject</button>' +
