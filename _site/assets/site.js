@@ -1,8 +1,7 @@
-/* Coburn Roofing — shared behaviour */
+
 (function () {
   "use strict";
 
-  /* ---- Mobile nav toggle ---- */
   var nav = document.querySelector(".nav");
   var toggle = document.querySelector(".nav-toggle");
   if (nav && toggle) {
@@ -19,29 +18,23 @@
     });
   }
 
-  /* ---- Lazy-play videos only while on screen (saves data + CPU) ---- */
   var vids = document.querySelectorAll("video[data-lazy]");
   if (vids.length && "IntersectionObserver" in window) {
     var vio = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         var v = e.target;
         if (e.isIntersecting) {
-          /* Attach the poster only now. A <video preload="none"> still fetches
-             its poster IMMEDIATELY - preload governs the media, not the poster -
-             so three below-fold posters were competing with the hero poster,
-             which is the page's LCP element. */
+
           var dp = v.getAttribute("data-poster");
           if (dp) { v.setAttribute("poster", dp); v.removeAttribute("data-poster"); }
           if (v.paused) v.play().catch(function () {});
         } else if (!v.paused) v.pause();
       });
-      /* rootMargin so the poster and clip start a little before they scroll
-         into view, rather than popping in blank. */
+
     }, { threshold: 0.25, rootMargin: "200px 0px" });
     vids.forEach(function (v) { vio.observe(v); });
   }
 
-  /* ---- Reviews: autoscroll slider (native swipe) + dots ---- */
   var slider = document.querySelector(".rev-slider");
   if (slider) {
     var slides = Array.prototype.slice.call(slider.children);
@@ -91,14 +84,13 @@
     window.addEventListener("resize", function () { markDot(); });
   }
 
-  /* ---- WhatsApp redirect form(s) ---- */
   document.querySelectorAll("form.wa-form").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var num = form.getAttribute("data-wa") || "";
       var get = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ""; };
       var lines = [
-        "Hi Coburn Roofing, I'd like a quote.",
+        "Hi Zak, I found you on your website and I'd like a quote.",
         "",
         "Name: " + get("name"),
         "Phone: " + get("phone"),
@@ -112,38 +104,13 @@
     });
   });
 
-  /* ---- Footer year ---- */
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
-
-  /* ============================================================
-     LEAD LOGGER -> Google Sheet + email + innov8 CRM
-     ============================================================
-     The endpoint arrives on <body data-lead>, from BIZ.LEAD_URL in build.js.
-     No URL, no listeners, no requests - the whole block is inert.
-
-     NEVER navigator.sendBeacon here. Brave, uBlock and Firefox strict mode
-     block the beacon WHILE sendBeacon() still returns true, so the common
-     `if (sendBeacon(...)) return; fetch(...)` shape skips the working fetch and
-     the lead vanishes with no error anywhere. fetch + keepalive:true survives
-     the tab being carried off to WhatsApp just as well - that is what keepalive
-     is for - and cannot report a success it did not achieve.
-
-     text/plain is deliberate: it keeps the request CORS-simple, so there is no
-     preflight for Apps Script to fail. no-cors because we never read the reply.
-
-     NOT consent-gated, unlike analytics. It stores nothing on the device and
-     sets no cookie, so PECR does not apply, and a submitted enquiry is data the
-     customer chose to send. A declined cookie banner must never cost a lead.
-
-     THE TYPE STRINGS BELOW MUST MATCH NOTIFY_TYPES IN Code.gs EXACTLY.
-     A mismatch silently disables the email alert for that action. */
   var LEAD_URL = document.body.getAttribute("data-lead");
 
   if (LEAD_URL) {
-    /* ?test=1 flags the payload so rows can be told apart. NOTE the CRM does
-       NOT separate test leads - delete them from the Client Dash afterwards. */
+
     var LEAD_TEST = /[?&]test=1/.test(location.search);
 
     var sendLead = function (d) {
@@ -157,13 +124,11 @@
           keepalive: true,
           headers: { "Content-Type": "text/plain;charset=UTF-8" },
           body: JSON.stringify(d)
-        })["catch"](function () { /* never break the page */ });
-      } catch (e) { /* never break the page */ }
+        })["catch"](function () {   });
+      } catch (e) {   }
     };
     window.sendLead = sendLead;
 
-    /* Where on the page it happened -> the Sheet's Source column, so "3 calls
-       from the bottom CTA" is answerable. Coburn's own class names. */
     var leadWhere = function (el) {
       if (!el || !el.closest) return "page";
       if (el.closest(".float-cta")) return "floating button";
@@ -176,9 +141,6 @@
       return "page";
     };
 
-    /* Capture phase, delegated from document: a tel:/wa.me tap starts a
-       navigation that can tear this document down, and a bubble-phase listener
-       bound to the link itself can lose that race. */
     document.addEventListener("click", function (e) {
       var t = e.target;
       if (!t || !t.closest) return;
@@ -195,12 +157,6 @@
       }
     }, true);
 
-    /* The quote form. Capture phase again, so this runs BEFORE the WhatsApp
-       handler below preventDefaults and opens the app.
-
-       Coburn's form has no id and no email field: it is <form class="wa-form">
-       with name/phone/area/service/message read by NAME, not by id. `area` is
-       Coburn-specific and Code.gs picks it up in its extras list. */
     document.addEventListener("submit", function (e) {
       var f = e.target;
       if (!f || !f.classList || !f.classList.contains("wa-form")) return;
@@ -215,38 +171,12 @@
         area: v("area"),
         service: v("service"),
         details: v("message"),
+        botcheck: v("botcheck"),
         source: "contact form"
       });
     }, true);
   }
 
-  /* ============================================================
-     COOKIE CONSENT AND GOOGLE ANALYTICS 4
-     ============================================================
-     The measurement ID arrives on <body data-ga4>, from BIZ.GA4_ID in
-     build.js. No ID, no banner, no gtag, no cookies - the whole block is
-     inert, which is how it stays testable and how it switches off.
-
-     WHY THIS IS NOT THE SNIPPET GOOGLE GIVES YOU. Google's snippet is two
-     <script> tags, the second inline. This site's CSP is script-src 'self'
-     plus the CRM host, with NO 'unsafe-inline', so that inline block would be
-     refused and analytics would silently never start - green in the editor,
-     dead in production. Everything below runs from site.js, which is
-     same-origin and allowed, and it appends the gtag loader itself.
-
-     CONSENT MODE V2, DENIED BY DEFAULT. gtag.js loads on every page but is
-     told up front that analytics_storage is denied, so NO COOKIE IS WRITTEN
-     until somebody presses Accept. A rejected visit still sends a cookieless
-     ping, which keeps headline visitor counts honest; the privacy policy says
-     so plainly rather than pretending rejection means nothing leaves the page.
-
-     wait_for_update gives the stored choice time to be read and applied before
-     the first hit goes out, so an accepting returning visitor is not counted
-     as a denied one on their first page.
-
-     The choice lives in localStorage, not a cookie. Storing a cookie to record
-     that you may not set cookies is the joke that writes itself, and
-     localStorage is exempt on the same "strictly necessary" grounds. */
   var GA_KEY = "coburn_consent", GA_VER = "v1";
   var ga4 = document.body.getAttribute("data-ga4");
 
@@ -288,10 +218,6 @@
     gtag("js", new Date());
     gtag("config", ga4, { anonymize_ip: true });
 
-    /* ---- the banner ----
-       Built in JS rather than shipped in every page's HTML, so a visitor who
-       has already answered never receives the markup at all. Styles live in
-       site.css. */
     var showBanner = function () {
       var b = document.createElement("div");
       b.className = "cc";
@@ -299,12 +225,7 @@
       b.setAttribute("aria-label", "Cookies");
       b.innerHTML =
         '<div class="cc__in">' +
-          /* The middle two sentences are wrapped so CSS can drop them on a phone.
-             At full length the banner was 206px tall - a third of a 390x844
-             screen - and it sat on top of the WhatsApp CTA on first load, which
-             is the one thing a first-time visitor is there to press. Desktop
-             keeps the full disclosure; mobile keeps the first sentence and the
-             policy link, which is where the detail belongs anyway. */
+
           '<p class="cc__t"><b>Cookies</b> We would like to count visits with Google Analytics, which sets a cookie. ' +
           '<span class="cc__more">It is not used for advertising and you are not tracked across other websites. ' +
           'The site works exactly the same either way. </span><a href="' +
@@ -317,20 +238,12 @@
       document.body.appendChild(b);
       document.body.classList.add("has-cc");
 
-      /* Push the call/WhatsApp float above the banner by the banner's REAL
-         height. A fixed offset is not enough: the text wraps to four lines on
-         a narrow phone and one on a wide screen, so the float ends up buried.
-         ResizeObserver rather than one measurement, because measuring on
-         append reads the height BEFORE the webfont swaps in, and rotating a
-         phone rewraps it again. */
       var lift = function () { document.body.style.setProperty("--cc-h", b.offsetHeight + "px"); };
       lift();
       var ro = null;
       if (window.ResizeObserver) { ro = new ResizeObserver(lift); ro.observe(b); }
       else { window.addEventListener("resize", lift); }
 
-      /* two frames: one to get it into the layout, one so the transition has a
-         start value to animate from rather than snapping */
       requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add("cc--in"); }); });
 
       var close = function (choice) {
@@ -338,8 +251,7 @@
         applyChoice(choice);
         b.classList.remove("cc--in");
         document.body.classList.remove("has-cc");
-        /* let the observer go with the banner, or it keeps a detached node
-           alive and keeps writing --cc-h for something that no longer exists */
+
         if (ro) ro.disconnect(); else window.removeEventListener("resize", lift);
         document.body.style.removeProperty("--cc-h");
         setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 350);
@@ -349,9 +261,6 @@
     };
     if (!stored) showBanner();
 
-    /* Lets somebody change their mind: any element with data-cc-reset wipes
-       the stored choice and reloads, bringing the banner back. It sits in the
-       privacy policy, because burying it would defeat the point. */
     document.addEventListener("click", function (e) {
       var t = e.target;
       while (t && t !== document.body) {
@@ -365,16 +274,6 @@
       }
     });
 
-    /* ---- events ----
-       Three, matching the names used across the other client sites and the
-       Apps Script lead types: click_to_call, click_whatsapp, generate_lead.
-       generate_lead is one of GA4's own recommended event names, so it can be
-       marked as a key event in the property with no extra setup.
-
-       Delegated from document in the CAPTURE phase: a tel: or wa.me tap starts
-       a navigation that can tear this document down, and a listener bound to
-       the link itself in the bubble phase can lose that race. Delegation also
-       covers links added to any page later without touching this file. */
     var where = function (el) {
       if (!el || !el.closest) return "page";
       if (el.closest(".float-cta")) return "floating button";
@@ -398,9 +297,6 @@
       }
     }, true);
 
-    /* The quote form does not POST anywhere - it hands off to WhatsApp - so
-       there is no thank-you page to count. The submit itself is the lead, and
-       it counts whether or not they go on to press send in WhatsApp. */
     document.addEventListener("submit", function (e) {
       var f = e.target;
       if (!f || !f.classList || !f.classList.contains("wa-form")) return;

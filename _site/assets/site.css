@@ -1,7 +1,4 @@
-/* ==========================================================================
-   Coburn Roofing — shared stylesheet
-   Brand: green + charcoal · Barlow Condensed (headings) + Inter (body)
-   ========================================================================== */
+
 :root{
   --green:#2EA82E; --green-bright:#3DBF3D; --green-dark:#1F8A1F; --green-ink:#178017;
   --char:#1E1E1E; --char-2:#2A2A2A; --char-3:#3A3A3A;
@@ -39,14 +36,12 @@ p{margin:0 0 1rem}
 .maxw{max-width:64ch}
 .center .maxw{margin-left:auto;margin-right:auto}
 
-/* ---- eyebrow / section head ---- */
 .eyebrow{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--green-dark);background:rgba(46,168,46,.10);padding:6px 15px;border-radius:var(--r);margin-bottom:16px}
 .bg-dark .eyebrow{color:var(--green-bright);background:rgba(61,191,61,.14)}
 .section-head{margin-bottom:40px}
 .section-head p{max-width:60ch}
 .center.section-head p,.section-head.center p{margin-left:auto;margin-right:auto}
 
-/* ---- buttons ---- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:1.02rem;padding:14px 26px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;transition:var(--ease);text-decoration:none;line-height:1}
 .btn svg{width:19px;height:19px;fill:currentColor;flex-shrink:0}
 .btn-primary{background:var(--green);color:#fff;box-shadow:0 10px 24px -8px rgba(46,168,46,.6)}
@@ -64,7 +59,6 @@ p{margin:0 0 1rem}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap}
 .center .btn-row,.btn-row.center{justify-content:center}
 
-/* ---- header / nav ---- */
 .site-header{position:sticky;top:0;z-index:100;background:rgba(30,30,30,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-dark)}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
 .nav-logo{display:flex;align-items:center;flex-shrink:0}
@@ -87,7 +81,6 @@ p{margin:0 0 1rem}
 .nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-shrink:0}
 .nav-toggle span{display:block;width:26px;height:2px;background:#fff;margin:5px 0;transition:var(--ease)}
 
-/* ---- HOME hero (video + centred enlarged logo) ---- */
 .hero-home{position:relative;min-height:min(880px,90vh);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;background:var(--char)}
 .hero-home .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .hero-home .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,20,20,.7) 0%,rgba(20,20,20,.5) 45%,rgba(20,20,20,.72) 100%)}
@@ -101,7 +94,6 @@ p{margin:0 0 1rem}
 .scroll-cue svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
-/* ---- interior page hero (image + h1) ---- */
 .hero{position:relative;color:#fff;overflow:hidden;background:var(--char)}
 .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(120deg,rgba(20,20,20,.9) 0%,rgba(20,20,20,.72) 45%,rgba(20,20,20,.5) 100%)}
@@ -113,13 +105,11 @@ p{margin:0 0 1rem}
 .hero .btn-ghost{color:#fff;border-color:rgba(255,255,255,.38)}
 .hero .btn-ghost:hover{background:rgba(255,255,255,.12);color:#fff;border-color:#fff}
 
-/* ---- breadcrumbs ---- */
 .crumbs{position:relative;z-index:2;font-size:.82rem;color:#AEB6C2;margin-bottom:16px;letter-spacing:.02em}
 .crumbs a{color:#AEB6C2}
 .crumbs a:hover{color:#fff}
 .crumbs span{color:#fff}
 
-/* ---- trust signals ---- */
 .trustbar{background:var(--char-2);color:#fff}
 .trustbar .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;padding-top:18px;padding-bottom:18px}
 .trustbar div{display:flex;align-items:center;gap:10px;font-size:.92rem;font-weight:500;color:#E7E9EE}
@@ -127,19 +117,16 @@ p{margin:0 0 1rem}
 .accred{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:26px 44px}
 .accred img{height:60px;width:auto;opacity:.9}
 
-/* ---- quick answer (GEO) ---- */
 .quick-answer{background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:var(--r-lg);padding:22px 26px;box-shadow:var(--shadow);margin-bottom:8px}
 .quick-answer h2,.quick-answer h3{font-family:'Inter',sans-serif;text-transform:none;letter-spacing:0;font-size:1rem;font-weight:700;color:var(--green-dark);margin-bottom:8px}
 .quick-answer p{font-size:1.05rem;color:var(--text);margin:0}
 .quick-answer p+p{margin-top:.7rem}
 
-/* ---- grids ---- */
 .grid{display:grid;gap:26px}
 .g-2{grid-template-columns:repeat(2,1fr)}
 .g-3{grid-template-columns:repeat(3,1fr)}
 .g-4{grid-template-columns:repeat(4,1fr)}
 
-/* ---- services: compact 2-up ---- */
 .svc2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .svc2 a{display:flex;gap:15px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:var(--r);padding:18px 18px;transition:var(--ease);color:var(--text)}
 .svc2 a:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);text-decoration:none;border-left-color:var(--green-bright)}
@@ -148,7 +135,6 @@ p{margin:0 0 1rem}
 .svc2 h3{font-size:1.08rem;margin-bottom:3px}
 .svc2 p{font-size:.85rem;color:var(--muted);margin:0;line-height:1.5}
 
-/* full service cards (services hub / other services) */
 .svc-card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--green);border-radius:var(--r-lg);padding:30px 26px;transition:var(--ease);display:flex;flex-direction:column}
 .svc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-top-color:var(--green-bright);text-decoration:none}
 .svc-ico{width:54px;height:54px;border-radius:var(--r);background:rgba(46,168,46,.1);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
@@ -157,7 +143,6 @@ p{margin:0 0 1rem}
 .svc-card p{color:var(--muted);font-size:.96rem;margin-bottom:16px}
 .svc-card .more{margin-top:auto;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--green-ink);font-size:.95rem}
 
-/* ---- before & after transformations (zig-zag) ---- */
 .ba-list{display:flex;flex-direction:column;gap:clamp(40px,6vw,72px)}
 .ba-item{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"media head" "media text";column-gap:clamp(24px,4vw,52px);align-items:center}
 .ba-item:nth-child(even){grid-template-areas:"head media" "text media"}
@@ -174,14 +159,12 @@ p{margin:0 0 1rem}
 .ba-head h3{font-size:clamp(1.4rem,2.6vw,1.9rem);margin-bottom:0}
 .ba-text p{color:var(--muted);margin:0}
 
-/* ---- gallery ---- */
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .gallery figure{position:relative;overflow:hidden;border-radius:var(--r-lg);aspect-ratio:4/3;box-shadow:var(--shadow)}
 .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .gallery figure:hover img{transform:scale(1.06)}
 .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 12px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:1.02rem;background:linear-gradient(transparent,rgba(0,0,0,.75))}
 
-/* ---- why / features ---- */
 .feat{display:flex;gap:16px;align-items:flex-start}
 .feat-ico{width:50px;height:50px;flex-shrink:0;border-radius:50%;background:rgba(46,168,46,.12);display:flex;align-items:center;justify-content:center}
 .feat-ico svg{width:26px;height:26px;fill:none;stroke:var(--green-dark);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -191,7 +174,6 @@ p{margin:0 0 1rem}
 .feat p{color:var(--muted);font-size:.94rem;margin:0}
 .bg-dark .feat p{color:#AEB6C2}
 
-/* ---- reviews slider ---- */
 .rev-slider{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:6px 2px 10px}
 .rev-slider::-webkit-scrollbar{display:none}
 .rev-slide{flex:0 0 100%;scroll-snap-align:center;min-width:0}
@@ -208,7 +190,6 @@ p{margin:0 0 1rem}
 .rev-dots button{width:9px;height:9px;border-radius:50%;background:#cfd4db;border:0;cursor:pointer;padding:0;transition:var(--ease)}
 .rev-dots button.active{background:var(--green);width:26px;border-radius:5px}
 
-/* ---- FAQ ---- */
 .faq{max-width:820px;margin:0 auto}
 .faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);margin-bottom:14px;overflow:hidden}
 .faq details[open]{border-color:rgba(46,168,46,.4);box-shadow:var(--shadow)}
@@ -219,13 +200,11 @@ p{margin:0 0 1rem}
 .faq .faq-body{padding:0 24px 22px;color:var(--muted)}
 .faq .faq-body p:last-child{margin-bottom:0}
 
-/* ---- split feature ---- */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,60px);align-items:center}
 .split.rev .split-media{order:2}
 .split-media img,.split-media video{width:100%;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);aspect-ratio:4/3;object-fit:cover}
 .split-media.tall img,.split-media.tall video{aspect-ratio:3/4}
 
-/* ---- checklist / steps ---- */
 .ticks{list-style:none;display:grid;gap:12px;margin:18px 0}
 .ticks.cols{grid-template-columns:1fr 1fr}
 .ticks li{display:flex;align-items:flex-start;gap:12px;font-size:.98rem}
@@ -237,7 +216,6 @@ p{margin:0 0 1rem}
 .steps h4{margin:6px 0 6px}
 .steps p{color:var(--muted);font-size:.92rem;margin:0}
 
-/* ---- areas ---- */
 .area-links{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;list-style:none}
 .area-links a{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;color:var(--char);font-weight:600;transition:var(--ease)}
 .area-links a:hover{border-color:var(--green);color:var(--green-ink);text-decoration:none;transform:translateY(-3px);box-shadow:var(--shadow)}
@@ -245,7 +223,6 @@ p{margin:0 0 1rem}
 .chips{display:flex;flex-wrap:wrap;gap:9px;list-style:none;margin-top:6px}
 .chips li{background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 15px;font-size:.9rem;color:var(--char-2)}
 
-/* ---- contact / whatsapp form ---- */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
 .contact-item{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line)}
 .contact-item:last-child{border-bottom:0}
@@ -261,7 +238,6 @@ p{margin:0 0 1rem}
 .wa-form textarea{min-height:120px;resize:vertical}
 .wa-form .hint{font-size:.82rem;color:var(--muted);margin-top:12px;text-align:center}
 
-/* ---- prose ---- */
 .prose h2{margin:34px 0 12px}
 .prose h3{margin:26px 0 10px}
 .prose p{color:var(--text)}
@@ -269,7 +245,6 @@ p{margin:0 0 1rem}
 .prose li{margin-bottom:.4rem}
 .prose>p:first-child{font-size:1.1rem}
 
-/* ---- CTA band + hero-image CTA ---- */
 .cta-band{background:linear-gradient(120deg,var(--green-dark),var(--green));color:#fff;text-align:center}
 .cta-band h2{color:#fff}
 .cta-band p{color:rgba(255,255,255,.92);max-width:56ch;margin:0 auto;font-size:1.1rem}
@@ -283,7 +258,6 @@ p{margin:0 0 1rem}
 .cta-hero h2{color:#fff}
 .cta-hero p{color:rgba(255,255,255,.92);max-width:56ch;margin:0 auto;font-size:1.12rem}
 
-/* ---- footer ---- */
 .site-footer{background:#151515;color:#9AA0A8;font-size:.92rem}
 .footer-accred{border-bottom:1px solid #262626;padding:26px 0}
 .footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:36px;padding:56px 0 40px}
@@ -301,7 +275,6 @@ p{margin:0 0 1rem}
 .footer-bottom{border-top:1px solid #262626;padding:20px 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:.82rem;color:#71767E}
 .footer-bottom a{color:#9AA0A8}
 
-/* ---- floating call / whatsapp ---- */
 .float-cta{position:fixed;bottom:20px;right:20px;z-index:90;display:flex;flex-direction:column;gap:12px}
 .float-cta a{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.28);transition:var(--ease)}
 .float-cta a:hover{transform:scale(1.08)}
@@ -309,9 +282,6 @@ p{margin:0 0 1rem}
 .float-call{background:var(--green);display:none!important}
 .float-cta svg{width:28px;height:28px;fill:#fff}
 
-/* ==========================================================================
-   Responsive
-   ========================================================================== */
 @media (max-width:960px){
   .g-4{grid-template-columns:repeat(2,1fr)}
   .footer-top{grid-template-columns:1fr 1fr;gap:30px}
@@ -329,15 +299,15 @@ p{margin:0 0 1rem}
   .split.rev .split-media{order:0}
   .g-3,.g-2,.gallery,.area-links,.steps.g-4{grid-template-columns:1fr 1fr}
   .ticks.cols{grid-template-columns:1fr}
-  /* zig-zag collapses to a single stacked column: title, video, description */
+
   .ba-item,.ba-item:nth-child(even){grid-template-columns:1fr;grid-template-areas:"head" "media" "text";row-gap:14px}
   .ba-head,.ba-text{text-align:center}
 }
 @media (max-width:560px){
   .g-3,.g-4,.g-2,.gallery,.area-links,.steps.g-4{grid-template-columns:1fr}
-  .svc2{grid-template-columns:1fr 1fr;gap:12px}      /* keep 2-up on mobile for fast scroll */
+  .svc2{grid-template-columns:1fr 1fr;gap:12px}
   .svc2 a{flex-direction:column;gap:10px;padding:16px 14px}
-  .svc2 p{display:none}                               /* compact boxes on small screens */
+  .svc2 p{display:none}
   .btn-row{flex-direction:column}
   .btn-row .btn{width:100%}
   .footer-top{grid-template-columns:1fr;gap:26px}
@@ -347,12 +317,6 @@ p{margin:0 0 1rem}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
-/* ============================================================
-   COOKIE CONSENT BANNER
-   ============================================================
-   Built and injected by site.js, styled here rather than there: injecting a
-   <style> element would lean on style-src 'unsafe-inline' for no reason.
-   Only ever rendered for a visitor who has not yet answered. */
 .cc{
   position:fixed;left:0;right:0;bottom:0;z-index:130;
   background:var(--char);color:#fff;border-top:1px solid rgba(255,255,255,.14);
@@ -381,10 +345,6 @@ p{margin:0 0 1rem}
 .cc__yes{background:var(--green);color:#fff;border:1px solid var(--green)}
 .cc__yes:hover{background:var(--green-bright);border-color:var(--green-bright)}
 
-/* --cc-h is the banner's MEASURED height, written by site.js. A fixed offset
-   is not good enough - the text wraps to four lines on a narrow phone and one
-   on a wide screen, which buries the call/WhatsApp float behind the banner.
-   The fallback only covers the instant before the first measurement. */
 body.has-cc .float-cta{bottom:calc(20px + var(--cc-h,150px))}
 
 @media(max-width:600px){
@@ -394,70 +354,31 @@ body.has-cc .float-cta{bottom:calc(20px + var(--cc-h,150px))}
   .cc__b button{flex:1}
 }
 
-/* ============================================================
-   MOBILE COMPACTION
-   ============================================================
-   Measured against the other generator sites at 390x844 before writing this.
-   Coburn's hero was 898px - 1.06x the viewport - so nothing below it was
-   visible without scrolling, while S. Sparham (0.62x) and Weather Proof
-   (0.78x) both show the next section. The cause was that the existing 560px
-   block never touched the hero at all, so phones inherited desktop sizing:
-   96px of section padding, an 84%-wide logo and 18px sub-text.
-
-   Kept in one block, at the end, so it is obvious what is mobile-only and so
-   source order beats the base rules without needing !important. */
 @media (max-width:560px){
 
-  /* 96px top AND bottom was 192px of the 898. */
-  /* THE ACTUAL CAUSE of the hero being taller than the screen.
-     .hero-home carries min-height:min(880px,90vh), which pins the section to
-     90% of the viewport no matter how little is in it - so trimming the logo,
-     the heading and the sub-text changed nothing at all until this was lifted.
-     min-height:auto lets the content decide, which lands it around 0.75x the
-     screen, in line with Weather Proof (0.78) and S. Sparham (0.62).
-     90vh is doubly wrong on a phone: vh ignores the address bar, so the
-     section is taller than the space actually visible. */
   .hero-home{min-height:auto}
 
   .hero-home-inner{padding:56px 20px}
 
-  /* The logo was rendering 294px square - a third of the screen - directly
-     below the same logo in the nav. */
   .hero-logo-big{width:min(200px,52%);margin:0 auto 18px}
 
   .hero-home h1{font-size:1.65rem;line-height:1.12;margin-bottom:12px}
-  /* .hero-home .hero-sub is (0,2,0) in the base sheet. A bare .hero-sub here
-     is (0,1,0) and loses even from inside a media query - media queries add no
-     specificity. Match the selector rather than reach for !important. */
+
   .hero-home .hero-sub{font-size:1rem;line-height:1.5;margin-bottom:18px}
 
-  /* clamp(48px,7vw,88px) bottoms out at 48px on a phone, because 7vw is only
-     27px at 390. The house standard on the other sites is 38. */
   .section{padding:38px 0}
 
-  /* ---- tap targets ----
-     Sub-44px controls measured on the live site. The visual sizes are
-     deliberately unchanged; only the hit areas grow. */
-
-  /* Nav dropdown items were 18px tall. */
   .nav[data-open="true"] .nav-drop a{padding:13px 0}
 
-  /* Trim the consent banner on a phone. At full length it measured 206px -
-     a third of a 390x844 screen - and covered the WhatsApp CTA on first load,
-     which is the single thing a first-time visitor is there to press. The
-     first sentence and the policy link stay; the detail lives in the policy. */
   .cc__more{display:none}
   .cc__in{padding:12px 0}
   .cc__t{font-size:.82rem;line-height:1.45}
 
-  /* Inline contact links in body copy were ~20px tall. */
   .contact-item a,.reassure a{display:inline-block;padding:6px 0}
 }
 
-/* The review-slider dots were 9x9 (26x9 when active) - by far the smallest
-   controls on the site. Expand the HIT AREA with a transparent pseudo-element
-   rather than the dot itself, so they stay visually identical.
-   Not inside the media query: a 9px target is no easier to hit with a mouse. */
 .rev-dots{gap:18px}
 .rev-dots button{position:relative}
 .rev-dots button::after{content:"";position:absolute;inset:-18px;border-radius:50%}
+
+.hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}

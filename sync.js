@@ -72,4 +72,20 @@ for (const d of DIRS) {
   copyDir(from, path.join(DST, d));
 }
 
-console.log('synced ' + html.length + ' pages + ' + FILES.length + ' files + ' + DIRS.join(', ') + ' -> _site');
+/* Strip every developer comment from the PUBLISHED copy. The generator, site.css
+   and site.js keep their comments - they are the documentation - but anything in
+   _site is readable by any visitor in View Source or DevTools. The 2026-10-09
+   security scan found 66 comments shipping here, naming the CRM, the lead
+   logger's internals and other client sites. The stripper is parser-backed and
+   refuses any JS file whose tokens change, so it cannot break a CSP string or a
+   regex. If it fails, nothing is published: deploy is chained after this. */
+const { execFileSync } = require('child_process');
+const STRIP = path.join(require('os').homedir(), '.claude/site-kit/engine/strip-comments.js');
+try {
+  execFileSync(process.execPath, [STRIP, DST, '--write'], { stdio: 'pipe' });
+} catch (e) {
+  console.error('sync: comment strip FAILED - do not deploy\n' + String(e.stderr || e.message));
+  process.exit(1);
+}
+
+console.log('synced ' + html.length + ' pages + ' + FILES.length + ' files + ' + DIRS.join(', ') + ' -> _site (comments stripped)');
