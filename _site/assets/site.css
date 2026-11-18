@@ -292,7 +292,7 @@ p{margin:0 0 1rem}
 @media (max-width:820px){
   .nav-links,.nav-cta{display:none}
   .nav-toggle{display:block}
-  .nav[data-open="true"] .nav-links{display:flex;position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#1E1E1E;border-bottom:1px solid var(--line-dark);padding:8px 20px 20px}
+  .nav[data-open="true"] .nav-links{display:flex;position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#1E1E1E;border-bottom:1px solid var(--line-dark);padding:8px 20px 20px;max-height:calc(100vh - 72px);max-height:calc(100dvh - 72px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   .nav[data-open="true"] .nav-links li{border-bottom:1px solid #2c2c2c}
   .nav[data-open="true"] .nav-links a{display:block;padding:14px 0;font-size:.95rem}
   .nav[data-open="true"] .nav-links a::after{display:none}
