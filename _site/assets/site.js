@@ -309,4 +309,36 @@
     }, true);
   }
 
+  var owGrid = document.getElementById("owGrid");
+  var lb = document.getElementById("lightbox");
+  if (owGrid && lb) {
+    var items = Array.prototype.slice.call(owGrid.querySelectorAll(".ow-item img"));
+    var lbImg = document.getElementById("lbImg");
+    var at = 0;
+    var show = function (i) {
+      at = (i + items.length) % items.length;
+      lbImg.src = items[at].currentSrc || items[at].src;
+      lbImg.alt = items[at].alt;
+    };
+    var open = function (i) { show(i); lb.hidden = false; document.body.style.overflow = "hidden"; lb.querySelector(".lb-close").focus(); };
+    var close = function () { lb.hidden = true; document.body.style.overflow = ""; };
+    items.forEach(function (img, i) {
+      var tile = img.closest(".ow-item");
+      tile.setAttribute("tabindex", "0");
+      tile.setAttribute("role", "button");
+      tile.addEventListener("click", function () { open(i); });
+      tile.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(i); } });
+    });
+    lb.querySelector(".lb-close").addEventListener("click", close);
+    lb.querySelector(".lb-prev").addEventListener("click", function () { show(at - 1); });
+    lb.querySelector(".lb-next").addEventListener("click", function () { show(at + 1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    document.addEventListener("keydown", function (e) {
+      if (lb.hidden) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") show(at - 1);
+      else if (e.key === "ArrowRight") show(at + 1);
+    });
+  }
+
 })();
